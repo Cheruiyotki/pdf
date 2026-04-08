@@ -18,11 +18,18 @@ QuickConvert is a full-stack file conversion app scaffold built with:
 ## Quick Start
 
 1. Copy `.env.example` to `.env`
-2. Install dependencies with `npm install`
-3. Generate Prisma client: `npm run db:generate`
-4. Push schema to Neon: `npm run db:push`
-5. Seed starter data: `npm run db:seed`
-6. Run both apps: `npm run dev`
+2. Install dependencies with `pnpm install`
+3. Generate Prisma client: `pnpm db:generate`
+4. Push schema to Neon: `pnpm db:push`
+5. Seed starter data: `pnpm db:seed`
+6. Run both apps: `pnpm dev`
+
+If `pnpm` is not installed yet, enable it with Corepack:
+
+```bash
+corepack enable
+corepack prepare pnpm@10.8.1 --activate
+```
 
 ## Deployment
 

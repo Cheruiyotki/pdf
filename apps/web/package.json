@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@quickconvert/shared": "0.1.0",
+    "@quickconvert/shared": "workspace:*",
     "@sentry/nextjs": "^8.42.0",
     "clsx": "^2.1.1",
     "lucide-react": "^0.487.0",
