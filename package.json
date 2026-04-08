@@ -1,0 +1,20 @@
+{
+  "name": "quickconvert",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace @quickconvert/web\" \"npm run dev --workspace @quickconvert/api\"",
+    "build": "npm run build --workspace @quickconvert/shared && npm run build --workspace @quickconvert/api && npm run build --workspace @quickconvert/web",
+    "lint": "npm run lint --workspace @quickconvert/web",
+    "db:generate": "npm run prisma:generate --workspace @quickconvert/api",
+    "db:push": "npm run prisma:push --workspace @quickconvert/api",
+    "db:seed": "npm run prisma:seed --workspace @quickconvert/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

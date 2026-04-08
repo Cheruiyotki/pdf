@@ -1,0 +1,130 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum PlanTier {
+  FREE
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  INACTIVE
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  TRIALING
+}
+
+enum JobStatus {
+  QUEUED
+  PROCESSING
+  COMPLETED
+  FAILED
+  EXPIRED
+}
+
+enum ItemStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum SupportType {
+  BUG
+  SUPPORT
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String
+  passwordHash   String
+  planTier       PlanTier        @default(FREE)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  subscription   Subscription?
+  jobs           ConversionJob[]
+  usageEvents    UsageEvent[]
+  supportTickets SupportTicket[]
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  userId             String             @unique
+  stripeCustomerId   String?            @unique
+  stripeSubscription String?            @unique
+  status             SubscriptionStatus @default(INACTIVE)
+  currentPeriodEnd   DateTime?
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  user               User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ConversionJob {
+  id             String           @id @default(cuid())
+  userId         String?
+  toolSlug       String
+  status         JobStatus        @default(QUEUED)
+  planTier       PlanTier         @default(FREE)
+  originalCount  Int
+  completedCount Int              @default(0)
+  totalBytes     Int              @default(0)
+  fastMode       Boolean          @default(false)
+  optionsJson    Json?
+  errorMessage   String?
+  actorKey       String
+  ipAddress      String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  expiresAt      DateTime
+  deletedAt      DateTime?
+  user           User?            @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items          ConversionItem[]
+}
+
+model ConversionItem {
+  id               String        @id @default(cuid())
+  jobId            String
+  originalName     String
+  originalMimeType String
+  originalPath     String
+  outputPath       String?
+  outputName       String?
+  outputMimeType   String?
+  outputSizeBytes  Int?
+  status           ItemStatus    @default(PENDING)
+  errorMessage     String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  job              ConversionJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+}
+
+model UsageEvent {
+  id         String   @id @default(cuid())
+  userId     String?
+  actorKey   String
+  toolSlug   String
+  bytesUsed  Int      @default(0)
+  createdAt  DateTime @default(now())
+  ipAddress  String?
+  successful Boolean  @default(true)
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model SupportTicket {
+  id        String      @id @default(cuid())
+  userId    String?
+  type      SupportType
+  email     String
+  message   String
+  toolSlug  String?
+  createdAt DateTime    @default(now())
+  user      User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
