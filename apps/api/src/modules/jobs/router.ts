@@ -4,6 +4,7 @@ import { Router } from "express";
 import multer from "multer";
 import { planLimits, toolMap } from "@quickconvert/shared";
 import { ItemStatus, JobStatus, PlanTier } from "@prisma/client";
+import { env } from "../../config/env.js";
 import { prisma } from "../../lib/prisma.js";
 import { asyncHandler, getActorKey, getPlanTier, getRequestIp } from "../../lib/http.js";
 import { getDailyUsageCount } from "../usage/service.js";
@@ -96,7 +97,7 @@ jobsRouter.post(
       return;
     }
 
-    const expiresAt = new Date(Date.now() + 1000 * 60 * 30);
+    const expiresAt = new Date(Date.now() + 1000 * 60 * env.FILE_TTL_MINUTES);
 
     const job = await prisma.conversionJob.create({
       data: {

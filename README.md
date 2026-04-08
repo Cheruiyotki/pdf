@@ -31,6 +31,9 @@ QuickConvert is a full-stack file conversion app scaffold built with:
 - Point both apps at the same Neon Postgres database
 - Configure Stripe webhook to `POST /api/billing/webhook`
 - Set Sentry DSNs for both frontend and backend
+- Put the web app behind Vercel Edge or a CDN, and the API behind HTTPS with platform-level DDoS protection
+- Use the temporary uploads directory on ephemeral storage or object storage with lifecycle deletion if you want CDN-backed downloads
+- Enable Neon backups, SSL, and least-privilege environment variables in production
 
 ## Notes
 

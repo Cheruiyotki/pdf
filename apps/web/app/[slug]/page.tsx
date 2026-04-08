@@ -8,7 +8,7 @@ import { StructuredData } from "@/components/structured-data";
 import { buildToolJsonLd } from "@/lib/seo";
 
 type ToolPageProps = {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 };
 
 export function generateStaticParams() {
@@ -16,7 +16,7 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ToolPageProps): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug } = params;
   const tool = toolMap[slug];
 
   if (!tool) {
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: ToolPageProps): Promise<Metad
 }
 
 export default async function ToolPage({ params }: ToolPageProps) {
-  const { slug } = await params;
+  const { slug } = params;
   const tool = toolMap[slug];
 
   if (!tool) {
