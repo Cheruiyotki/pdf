@@ -1,6 +1,16 @@
-import "dotenv/config";
+import { config as loadEnv } from "dotenv";
+import { existsSync } from "node:fs";
 import path from "node:path";
 import { z } from "zod";
+
+const rootEnvPath = path.resolve(process.cwd(), "../../.env");
+const localEnvPath = path.resolve(process.cwd(), ".env");
+
+if (existsSync(rootEnvPath)) {
+  loadEnv({ path: rootEnvPath });
+} else if (existsSync(localEnvPath)) {
+  loadEnv({ path: localEnvPath });
+}
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
