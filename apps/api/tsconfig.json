@@ -22,7 +22,6 @@
     }
   },
   "include": [
-    "src/**/*.ts",
-    "prisma/**/*.ts"
+    "src/**/*.ts"
   ]
 }
