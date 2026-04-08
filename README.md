@@ -24,6 +24,8 @@ QuickConvert is a full-stack file conversion app scaffold built with:
 5. Seed starter data: `pnpm db:seed`
 6. Run both apps: `pnpm dev`
 
+The Prisma scripts are configured to read the workspace root `.env`, so you do not need a separate `apps/api/.env`.
+
 If `pnpm` is not installed yet, enable it with Corepack:
 
 ```bash
